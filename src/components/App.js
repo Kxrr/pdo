@@ -4,14 +4,13 @@
 
 
 import React from 'react';
-import { VisibleTaskList } from '../containers/VisibleTaskList'
-import { loadTestData } from '../tests/test'
-
-loadTestData();
+import VisibleTaskList from '../containers/VisibleTaskList'
+import UpperToolbar from '../containers/UpperToolbar'
 
 
 const App = () => (
   <div>
+      <UpperToolbar/>
       <VisibleTaskList/>
   </div>
 );

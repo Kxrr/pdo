@@ -6,7 +6,7 @@ import React from 'react';
 import Task  from './Task'
 
 
-export class TaskList extends React.Component {
+export default class TaskList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};

@@ -3,7 +3,8 @@
  */
 import { connect } from 'react-redux'
 import { deleteTask } from '../stores/actions'
-import * as T from '../components/TaskList.js'
+import TaskList from '../components/TaskList.js'
+
 
 const getVisibleTasks = function(tasks, filter){
     switch (filter){
@@ -17,9 +18,10 @@ const getVisibleTasks = function(tasks, filter){
 
 const mapStateToProps = (state) => {
   return {
-    tasks: getVisibleTasks(state.tasks, state.filter)
+    tasks: getVisibleTasks(state.task.items, state.filter)
   }
 };
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -29,7 +31,10 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export const VisibleTaskList = connect(
+
+const VisibleTaskList = connect(
     mapStateToProps,
     mapDispatchToProps
-)(T.TaskList);
+)(TaskList);
+
+export default VisibleTaskList;

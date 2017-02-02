@@ -2,11 +2,16 @@
  * Created by kxrr on 17/2/1.
  */
 
+import { createStore, applyMiddleware } from 'redux';
+import createLogger from 'redux-logger'
+import thunkMiddleware from 'redux-thunk'
 
-import * as reducers from './reducers';
-import { createStore } from 'redux';
+import { pdoApp } from './reducers';
 
-console.log(createStore);
-console.log(reducers.pdoApp);
-export let store = createStore(reducers.pdoApp);
+const loggerMiddleware = createLogger();
+
+export let store = createStore(
+    pdoApp,
+    applyMiddleware(thunkMiddleware, loggerMiddleware)
+);
 

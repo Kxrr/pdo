@@ -3,13 +3,15 @@
  */
 
 
-import { addTask, deleteTask, setFilter } from '../stores/actions'
+import { addTask, deleteTask, setFilter, fetchTasks } from '../stores/actions'
 import {store} from '../stores/store'
 
-let unsubscribeFn = store.subscribe(
-    () => (console.log(store.getState()))
-);
+function callback() {
+    let currentState = store.getState();
+    console.log(currentState);
+}
 
+let unsubscribeFn = store.subscribe(callback);
 
 
 export const loadTestData = function () {
@@ -18,5 +20,4 @@ export const loadTestData = function () {
 };
 
 
-
-
+store.dispatch(fetchTasks());
