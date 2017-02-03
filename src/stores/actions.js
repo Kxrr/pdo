@@ -70,7 +70,7 @@ export function fetchTasks() {
         dispatch(requestTasks());
 
         // 发起请求
-        fetch('http://127.0.0.1:8000/tasks', {mode: 'no-cors'})
+        fetch('http://127.0.0.1:8000/tasks', {mode: 'cors'})
             .then(getJson)
             .then(json => dispatch(receiveTasks(json)))
     }

@@ -2,8 +2,8 @@
  * Created by kxrr on 17/2/2.
  */
 
-import {connect} from 'react-redux'
-import {fetchTasks} from '../stores/actions'
+import { connect } from 'react-redux'
+import { fetchTasks } from '../stores/actions'
 import Toolbar from '../components/Toolbar.js'
 
 
@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onRefreshClick: () => {
             dispatch(fetchTasks())
-        }
+        },
     }
 };
 

@@ -4,6 +4,7 @@
 
 
 import React from 'react'
+import Button from './Button'
 
 
 export default class Toolbar extends React.Component {
@@ -13,9 +14,8 @@ export default class Toolbar extends React.Component {
     }
 
     render() {
-        return (<div><button onClick={this.props.onRefreshClick}>刷新</button></div>)
+        return (<Button text="刷新" onClick={this.props.onRefreshClick}/>)
     }
-
 
 }
 

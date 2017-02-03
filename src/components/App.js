@@ -8,7 +8,7 @@ import VisibleTaskList from '../containers/VisibleTaskList'
 import UpperToolbar from '../containers/UpperToolbar'
 
 
-const App = () => (
+const App = ({ param }) => (
   <div>
       <UpperToolbar/>
       <VisibleTaskList/>

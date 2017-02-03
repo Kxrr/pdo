@@ -4,16 +4,12 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
-import App from './components/App'
-import { store } from './stores/store'
 
-// console.log(App);
-// console.log(ReactDOM.render);
+import Root from './components/Root'
+import {store} from './stores/store'
+
 ReactDOM.render(
-    <Provider store={store}>
-        <App/>
-    </Provider>,
+    Root({store}),
     document.body.appendChild(document.createElement('div'))
 );
 
