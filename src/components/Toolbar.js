@@ -5,6 +5,7 @@
 
 import React from 'react'
 import Button from './Button'
+import TaskAdd from './TaskAdd'
 
 
 export default class Toolbar extends React.Component {
@@ -14,9 +15,20 @@ export default class Toolbar extends React.Component {
     }
 
     render() {
-        return (<Button text="刷新" onClick={this.props.onRefreshClick}/>)
+        return (
+            <div>
+                <TaskAdd onSubmit={this.props.onTaskAddSubmit}/>
+                <Button text="刷新" onClick={this.props.onRefreshClick}/>
+            </div>
+
+        )
     }
 
 }
 
 
+
+Toolbar.propTypes = {
+    onTaskAddSubmit: React.PropTypes.func,
+    onRefreshClick: React.PropTypes.func
+};

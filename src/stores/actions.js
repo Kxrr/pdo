@@ -7,6 +7,7 @@ import fetch from 'isomorphic-fetch'
 // 定义 action.type
 export const ADD_TASK = 'ADD_TASK';
 export const DELETE_TASK = 'DELETE_TASK';
+export const INVALIDATE_TASK = 'INVALIDATE_TASK';
 
 export const SET_FILTER = 'SET_FILTER';
 
@@ -35,6 +36,7 @@ export function setFilter(filter) {
 
 
 export function invalidateTasks() {
+    return {type: INVALIDATE_TASK}
     
 }
 
@@ -55,6 +57,7 @@ export function receiveTasks(json) {
     }
 
 }
+
 
 
 // async

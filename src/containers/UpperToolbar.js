@@ -3,7 +3,7 @@
  */
 
 import { connect } from 'react-redux'
-import { fetchTasks } from '../stores/actions'
+import { fetchTasks, addTask, invalidateTasks } from '../stores/actions'
 import Toolbar from '../components/Toolbar.js'
 
 
@@ -12,11 +12,16 @@ const mapStateToProps = (state) => {
 };
 
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         onRefreshClick: () => {
             dispatch(fetchTasks())
         },
+        onTaskAddSubmit: (e) => {
+            e.preventDefault();
+            dispatch(addTask('abc'));
+            dispatch(invalidateTasks());
+        }
     }
 };
 
