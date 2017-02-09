@@ -1,10 +1,13 @@
 # coding: utf-8
-
 import datetime
+from os.path import join
+
 from peewee import *
 from playhouse.sqlite_ext import SqliteExtDatabase
 
-db = SqliteExtDatabase('pdo-server.db')
+from . import PROJECT_ROOT
+
+db = SqliteExtDatabase(join(PROJECT_ROOT, 'pdo-server.db'))
 
 
 class BaseModel(Model):
@@ -28,7 +31,7 @@ class Task(BaseModel):
     url = CharField()
     cookies = CharField(null=True)
 
-    status = SmallIntegerField(0o000)
+    status = SmallIntegerField(default=0o000)
     file = ForeignKeyField(File, null=True)
     add_time = DateTimeField(default=datetime.datetime.now)
 
@@ -45,7 +48,3 @@ class Task(BaseModel):
 def create_tables():
     db.connect()
     db.create_tables([Task])
-
-
-if __name__ == '__main__':
-    create_tables()
