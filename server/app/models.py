@@ -28,8 +28,8 @@ class Task(BaseModel):
     url = CharField()
     cookies = CharField(null=True)
 
-    status = SmallIntegerField()
-    file = ForeignKeyField(File)
+    status = SmallIntegerField(0o000)
+    file = ForeignKeyField(File, null=True)
     add_time = DateTimeField(default=datetime.datetime.now)
 
     def get_progress(self, pid):
