@@ -4,8 +4,9 @@
 
 
 import React from 'react'
-import Button from './Button'
-import TaskAdd from './TaskAdd'
+import {Link} from 'react-router'
+
+import NavLink from './NavLink'
 
 
 export default class Toolbar extends React.Component {
@@ -17,15 +18,14 @@ export default class Toolbar extends React.Component {
     render() {
         return (
             <div>
-                <TaskAdd onSubmit={this.props.onTaskAddSubmit}/>
-                <Button text="刷新" onClick={this.props.onRefreshClick}/>
+                <h2>Toolbar</h2>
+                <NavLink to="addTask" >添加任务</NavLink>
+                <NavLink to="#" onClick={this.props.onRefreshClick}>刷新任务</NavLink>
             </div>
 
         )
     }
-
 }
-
 
 
 Toolbar.propTypes = {

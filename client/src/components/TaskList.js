@@ -14,12 +14,17 @@ export default class TaskList extends React.Component {
 
     render() {
         return (
-            <ul>{this.props.tasks.map(
-                task => <Task key={task.id} {...task} onClick={()=>this.props.onTaskClick(task.id)} url={task.url}/>
-            )}</ul>
+            <div>
+                <h2>TaskList</h2>
+                <ul>
+                    {this.props.tasks.map(task => <Task key={task.id} {...task}
+                                                        onClick={() => this.props.onTaskClick(task.id)}
+                                                        url={task.url}/>)}
+                </ul>
+            </div>
+
         )
     }
-
 }
 
 // TaskList.propTypes = {

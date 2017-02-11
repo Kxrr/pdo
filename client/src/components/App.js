@@ -4,15 +4,22 @@
 
 
 import React from 'react';
-import VisibleTaskList from '../containers/VisibleTaskList'
-import UpperToolbar from '../containers/UpperToolbar'
 
 
-const App = ({ param }) => (
-  <div>
-      <UpperToolbar/>
-      <VisibleTaskList/>
-  </div>
-);
+export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-export default App
+    render() {
+        return (
+            <div>
+                <h1>PDO</h1>
+                {this.props.children}
+            </div>
+        )
+    }
+
+}
+
