@@ -35,7 +35,7 @@ class AppView(web.View):
 class TaskWorkersView(AppView):
     async def get(self):
         workers = id_to_worker.keys()
-        return self.response([w.to_dict() for w in workers])
+        return self.response([w.to_dict() for w in workers], code=200)
 
     async def post(self):
         data = await self.request.post()
@@ -43,7 +43,7 @@ class TaskWorkersView(AppView):
         worker = Worker(task)
         pdo_loop.create_task(worker.start())
         id_to_worker[task.id] = worker
-        return self.response(worker.to_dict())
+        return self.response(worker.to_dict(), code=201)
 
 
 class TaskWorkerView(AppView):
@@ -51,8 +51,8 @@ class TaskWorkerView(AppView):
         task_id = int(self.request.match_info['task_id'])
         worker = id_to_worker.get(task_id)
         if not worker:
-            return self.fail('TaskWorker {} not exists.'.format(task_id))
-        return self.response(worker.to_dict())
+            return self.fail('TaskWorker {} not exists.'.format(task_id), code=404)
+        return self.response(worker.to_dict(), code=200)
 
 
 def make_app(loop):
@@ -65,4 +65,4 @@ def make_app(loop):
 
 
 def run():
-    web.run_app(make_app(pdo_loop), port=8000)
+    web.run_app(make_app(pdo_loop), port=3000)
