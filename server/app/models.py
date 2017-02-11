@@ -28,18 +28,21 @@ class Task(BaseModel):
         0o100: '已完成',
     }
 
+    id = PrimaryKeyField()
     url = CharField()
     cookies = CharField(null=True)
+    headers = CharField(null=True)
 
     status = SmallIntegerField(default=0o000)
     file = ForeignKeyField(File, null=True)
     add_time = DateTimeField(default=datetime.datetime.now)
 
-    def get_progress(self, pid):
-        """
-        :rtype: float
-        """
-        pass
+    def to_dict(self):
+        data = self._data.copy()
+        data['_status'] = data['status']
+        data['status'] = self.STATE_TO_TEXT[data['_status']]
+        data['id'] = self.id
+        return data
 
     def __str__(self):
         return '<Task {0}>'.format(self.url)

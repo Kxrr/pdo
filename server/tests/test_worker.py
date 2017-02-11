@@ -22,6 +22,9 @@ class WorkerTestCase(unittest.TestCase):
         d = json.loads(self._data2str(data))
         self.assertDictEqual(cookies, d['cookies'])
 
+    def test_with_headers(self):
+        pass
+
     def test_Worker(self):
         w = worker.Worker(Task(url='http://httpbin.org/'))
         self.loop.run_until_complete(w.start())

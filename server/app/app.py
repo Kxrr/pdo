@@ -6,10 +6,13 @@ from functools import partial
 from aiohttp import web
 
 from .models import Task
+from .worker import Worker
 from .utils import json_serial
 
 pdo_loop = asyncio.new_event_loop()
 """:type: asyncio.unix_events._UnixSelectorEventLoop"""
+
+id_to_worker = {}
 
 
 async def hello(request):
@@ -17,21 +20,47 @@ async def hello(request):
 
 
 class AppView(web.View):
-    def json_response(self, data, **kwargs):
+    def jsonify(self, data, **kwargs):
         dumps = partial(json.dumps, default=json_serial)
         return web.json_response(data, dumps=dumps)
 
+    def response(self, data, code=200):
+        return self.jsonify({'data': data, 'code': code})
 
-class TaskView(AppView):
+    def fail(self, error_msg, code=404):
+        data = {'error': error_msg, 'code': code}
+        return self.jsonify(data)
+
+
+class TaskWorkersView(AppView):
     async def get(self):
-        tasks = list(Task.select().dicts())
-        return self.json_response({'data': tasks})
+        workers = id_to_worker.keys()
+        return self.response([w.to_dict() for w in workers])
+
+    async def post(self):
+        data = await self.request.post()
+        task = Task.create(url=data['url'], cookies=data.get('cookies'), headers=data.get('headers'))
+        worker = Worker(task)
+        pdo_loop.create_task(worker.start())
+        id_to_worker[task.id] = worker
+        return self.response(worker.to_dict())
+
+
+class TaskWorkerView(AppView):
+    async def get(self):
+        task_id = int(self.request.match_info['task_id'])
+        worker = id_to_worker.get(task_id)
+        if not worker:
+            return self.fail('TaskWorker {} not exists.'.format(task_id))
+        return self.response(worker.to_dict())
 
 
 def make_app(loop):
     app = web.Application(loop=loop)
     app.router.add_get('/', hello)
-    app.router.add_route('*', '/tasks', TaskView)
+    app.router.add_route('*', '/tasks', TaskWorkersView)
+    app.router.add_route('*', '/tasks/{task_id}', TaskWorkerView)
+
     return app
 
 
