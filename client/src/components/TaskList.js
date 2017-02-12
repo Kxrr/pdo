@@ -4,12 +4,18 @@
 
 import React from 'react';
 import Task  from './Task'
+import {fetchTasks} from '../stores/actions'
 
 
 export default class TaskList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+    }
+
+    componentDidMount() {
+        const {dispatch} = this.props;
+        dispatch(fetchTasks())
     }
 
     render() {
@@ -26,7 +32,3 @@ export default class TaskList extends React.Component {
         )
     }
 }
-
-// TaskList.propTypes = {
-//     onTaskClick: React.PropTypes.func.isRequired
-// };

@@ -40,13 +40,6 @@ class Worker(object):
         self.add_default_processors()
 
     @asyncio.coroutine
-    def set_size(self):
-        with aiohttp.ClientSession(cookies=self.task.cookies) as session:
-            response = yield from session.head(self.task.url)
-            self.total_size = int(response.headers['Content-Length'])
-            response.close()
-
-    @asyncio.coroutine
     def start(self):
         yield from self.set_size()
         self.on_started()
@@ -56,6 +49,24 @@ class Worker(object):
         self.finished = True
         self.on_finished(data)
         logger.info(self.__dict__)
+
+    def to_dict(self):
+        d = self.task.to_dict()
+        d['progress'] = self.current_size / self.total_size if self.total_size else 0
+        d['total_size'] = self.total_size
+        return d
+
+    @property
+    def id(self):
+        # use the unique id of `task`
+        return self.task.id
+
+    @asyncio.coroutine
+    def set_size(self):
+        with aiohttp.ClientSession(cookies=self.task.cookies) as session:
+            response = yield from session.head(self.task.url)
+            self.total_size = int(response.headers['Content-Length'])
+            response.close()
 
     def on_finished(self, data):
         self.task.status = 0o100
@@ -82,8 +93,12 @@ class Worker(object):
     def data_processor(self, chunk):
         self.data.append(chunk)
 
-    def to_dict(self):
-        d = self.task.to_dict()
-        d['progress'] = self.current_size / self.total_size if self.total_size else 0
-        d['total_size'] = self.total_size
-        return d
+
+class DummyWorker(Worker):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.started = True
+        self.finished = True
+
+    def start(self):
+        raise RuntimeError('{0} is unable to start.'.format(type(self)))

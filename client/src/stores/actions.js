@@ -37,7 +37,7 @@ export function setFilter(filter) {
 
 export function invalidateTasks() {
     return {type: INVALIDATE_TASK}
-    
+
 }
 
 
@@ -52,19 +52,18 @@ export function requestTasks() {
 export function receiveTasks(json) {
     return {
         type: RECEIVE_TASKS,
-        items: json,
+        tasks: json.data,
         receivedAt: Date.now()
     }
-
 }
 
 
+const pdoAPI = 'http://localhost:3000';
 
 // async
 export function fetchTasks() {
 
     function getJson(response) {
-        console.log(response);
         return response.json();
     }
 
@@ -73,7 +72,7 @@ export function fetchTasks() {
         dispatch(requestTasks());
 
         // 发起请求
-        fetch('http://127.0.0.1:8000/tasks', {mode: 'cors'})
+        fetch(`${pdoAPI}/tasks`, {mode: 'cors'})
             .then(getJson)
             .then(json => dispatch(receiveTasks(json)))
     }

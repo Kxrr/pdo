@@ -5,14 +5,16 @@ from functools import partial
 
 from aiohttp import web
 
+from app.worker import DummyWorker
 from .models import Task
 from .worker import Worker
-from .utils import json_serial
+from .utils import json_serial, cors_middleware
 
 pdo_loop = asyncio.new_event_loop()
 """:type: asyncio.unix_events._UnixSelectorEventLoop"""
 
 id_to_worker = {}
+
 
 
 async def hello(request):
@@ -34,7 +36,10 @@ class AppView(web.View):
 
 class TaskWorkersView(AppView):
     async def get(self):
-        workers = id_to_worker.keys()
+        workers = list(id_to_worker.keys())
+        if not self.request.match_info.get('activated', False):
+            workers += [DummyWorker(task) for task in Task.select()]
+
         return self.response([w.to_dict() for w in workers], code=200)
 
     async def post(self):
@@ -56,7 +61,7 @@ class TaskWorkerView(AppView):
 
 
 def make_app(loop):
-    app = web.Application(loop=loop)
+    app = web.Application(loop=loop, middlewares=[cors_middleware])
     app.router.add_get('/', hello)
     app.router.add_route('*', '/tasks', TaskWorkersView)
     app.router.add_route('*', '/tasks/{task_id}', TaskWorkerView)

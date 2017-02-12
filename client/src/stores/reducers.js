@@ -14,12 +14,10 @@ const initialState = {
 
 const initialFormState = { values: {} };
 
-export function task(state={
+export function tasks(state={
     isFetching: false,
-    items: [],
+    tasks: [],
 }, action) {
-    // state: array<Task>
-
     switch (action.type) {
         case ADD_TASK:
             let new_task = {url: action.url, id: globalID++};
@@ -29,11 +27,11 @@ export function task(state={
         case DELETE_TASK:
             return state.filter((task, i) => (task.id != action.id));
         case REQUEST_TASKS:
-            return Object.assign(state, {isFetching: true});
+            return Object.assign({}, state, {isFetching: true});
         case RECEIVE_TASKS:
-            return Object.assign(state, {isFetching: false, items: action.items});
+            console.log('recevied');
+            return Object.assign({}, state, {isFetching: false, tasks: action.tasks});
         case INVALIDATE_TASK:
-            // TODO: didn't work
             return state;
         default:
             return state;
@@ -69,11 +67,7 @@ export function form(state=initialFormState, action) {
 
 export function pdoApp(state=initialState, action) {
     // state: Object
-    return {
-        task: task(state.task, action),
-        filter: filter(state.filter, action),
-        // form: form(state.form)
-    };
+    return tasks(state, action)
 }
 
 
