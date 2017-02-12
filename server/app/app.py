@@ -16,7 +16,6 @@ pdo_loop = asyncio.new_event_loop()
 id_to_worker = {}
 
 
-
 async def hello(request):
     return web.Response(text='THIS IS PDO.')
 
@@ -36,9 +35,8 @@ class AppView(web.View):
 
 class TaskWorkersView(AppView):
     async def get(self):
-        workers = list(id_to_worker.keys())
-        if not self.request.match_info.get('activated', False):
-            workers += [DummyWorker(task) for task in Task.select()]
+        workers = list(id_to_worker.values())
+        # workers += [DummyWorker(task) for task in Task.select()]
 
         return self.response([w.to_dict() for w in workers], code=200)
 

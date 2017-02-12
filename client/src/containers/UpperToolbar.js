@@ -9,3 +9,4 @@ import Toolbar from '../components/Toolbar.js'
 const UpperToolbar = connect()(Toolbar);
 
 export default UpperToolbar;
+

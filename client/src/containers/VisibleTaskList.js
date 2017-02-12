@@ -18,7 +18,7 @@ const getVisibleTasks = function (tasks, filter) {
 
 const mapStateToProps = (state) => {
     return {
-        tasks: getVisibleTasks(state.tasks, state.filter) || []
+        tasks: state.tasks
     }
 };
 

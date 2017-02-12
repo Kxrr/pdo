@@ -5,7 +5,7 @@ import React, {PropTypes} from 'react';
 import {Provider} from 'react-redux';
 import {Router, Route, hashHistory, IndexRoute, browserHistory} from 'react-router';
 
-import TaskAddForm from './TaskAddForm'
+import PopTaskAddForm from '../containers/PopTaskAddForm'
 import Help from './Help'
 import App from './App'
 import Home from './Home'
@@ -15,7 +15,7 @@ const Root = ({store}) => (
         <Router history={hashHistory}>
             <Route path="/" component={App}>
                 <IndexRoute component={Home}/>
-                <Route path="/addTask" component={TaskAddForm} />
+                <Route path="/addTask" component={PopTaskAddForm} />
                 <Route path="/help" component={Help}/>
             </Route>
         </Router>

@@ -12,14 +12,16 @@ export default class Task extends React.Component {
     }
 
     render(){
+        const task = this.props.task;
         return (
-            <li onClick={this.props.onClick}>{this.props.url}</li>
+            <div>
+                {task.id} {task.url} {task.progress}
+            </div>
         )
     }
 
 }
 
 Task.propTypes = {
-    url: React.PropTypes.string.isRequired,
-    onClick: React.PropTypes.func.isRequired
+    task: React.PropTypes.object
 };

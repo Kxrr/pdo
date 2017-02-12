@@ -15,7 +15,11 @@ export default class TaskList extends React.Component {
 
     componentDidMount() {
         const {dispatch} = this.props;
-        dispatch(fetchTasks())
+        this.intervalId = setInterval(()=> dispatch(fetchTasks()), 5000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalId);
     }
 
     render() {
@@ -23,9 +27,7 @@ export default class TaskList extends React.Component {
             <div>
                 <h2>TaskList</h2>
                 <ul>
-                    {this.props.tasks.map(task => <Task key={task.id} {...task}
-                                                        onClick={() => this.props.onTaskClick(task.id)}
-                                                        url={task.url}/>)}
+                    {this.props.tasks.items.map(task => <Task key={task.id} task={task} />)}
                 </ul>
             </div>
 

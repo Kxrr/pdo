@@ -5,18 +5,23 @@
 import { combineReducers } from 'redux';
 import {Filters, ADD_TASK, DELETE_TASK, REQUEST_TASKS, RECEIVE_TASKS, SET_FILTER, INVALIDATE_TASK} from './actions'
 import * as f from './form_actions'
+import { reducer as formReducer } from 'redux-form'
 
 let globalID = 0;
 const initialState = {
-    tasks: [],
-    filter: Filters.SHOW_ALL
+    tasks: {
+        isFetching: false,
+        items: []
+    },
+    filter: Filters.SHOW_ALL,
+    form: {}
 };
 
 const initialFormState = { values: {} };
 
 export function tasks(state={
     isFetching: false,
-    tasks: [],
+    items: [],
 }, action) {
     switch (action.type) {
         case ADD_TASK:
@@ -29,8 +34,7 @@ export function tasks(state={
         case REQUEST_TASKS:
             return Object.assign({}, state, {isFetching: true});
         case RECEIVE_TASKS:
-            console.log('recevied');
-            return Object.assign({}, state, {isFetching: false, tasks: action.tasks});
+            return Object.assign({}, state, {isFetching: false, items: action.items});
         case INVALIDATE_TASK:
             return state;
         default:
@@ -46,7 +50,6 @@ export function filter(state = Filters.SHOW_ALL, action) {
             return action.filter;
         default:
             return state
-
     }
 }
 
@@ -64,15 +67,15 @@ export function form(state=initialFormState, action) {
 
 }
 
+const user = {};
 
 export function pdoApp(state=initialState, action) {
-    // state: Object
-    return tasks(state, action)
+    return {
+        "tasks": tasks(state.tasks, action),
+        "form": formReducer(state.form, action)
+    }
 }
 
 
-// const app = combineReducers({
-//     tasks,
-//     filter,
-// });
+
 

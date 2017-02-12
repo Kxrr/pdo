@@ -4,6 +4,7 @@
 
 
 import React from 'react';
+import {IndexLink} from 'react-router'
 
 
 export default class App extends React.Component {
@@ -15,7 +16,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <h1>PDO</h1>
+                <h1><IndexLink to="/">PDO</IndexLink></h1>
                 {this.props.children}
             </div>
         )

@@ -1,27 +1,35 @@
 /**
  * Created by kxrr on 17/2/4.
  */
-import React from 'react';
-import Form from './Form'
 
 
-export default class TaskAddForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-    
-    render(){
+import React, {Component} from 'react';
+import {Field, reduxForm} from 'redux-form';
+
+class TaskAddForm extends Component {
+    render() {
+        const {handleSubmit, submitting} = this.props;
+        console.log(this.props);
         return (
-            <form onSubmit={this.props.onSubmit}>
-                <input name="url" />
-                <button type="submit" value="submit">submit</button>
+            <form onSubmit={handleSubmit(this.props.createTask)}>
+                <div>
+                    <label htmlFor="url">url</label>
+                    <Field name="url" component="input" type="text"/>
+                </div>
+                <div>
+                    <label htmlFor="cookies">cookies</label>
+                    <Field name="cookies" component="input" type="text"/>
+                </div>
+                <button type="submit" disabled={submitting}>Submit</button>
             </form>
-        )
+        );
     }
 }
 
+// Decorate the form component
+TaskAddForm = reduxForm({
+    form: 'taskAddForm' // a unique name for this form
+})(TaskAddForm);
 
-TaskAddForm.propTypes = {
-    onSubmit: React.PropTypes.func,
-};
+export default TaskAddForm;
+
