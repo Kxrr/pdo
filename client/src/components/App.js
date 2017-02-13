@@ -4,7 +4,6 @@
 
 
 import React from 'react';
-import {IndexLink} from 'react-router'
 
 
 export default class App extends React.Component {
