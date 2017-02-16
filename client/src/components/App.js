@@ -4,6 +4,8 @@
 
 
 import React from 'react';
+import {IndexLink} from 'react-router'
+import {PageHeader} from 'react-bootstrap'
 
 
 export default class App extends React.Component {
@@ -15,11 +17,9 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <h1><IndexLink to="/">PDO</IndexLink></h1>
+                <PageHeader><IndexLink to="/">PDO</IndexLink></PageHeader>
                 {this.props.children}
             </div>
         )
     }
-
 }
-

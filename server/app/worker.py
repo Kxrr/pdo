@@ -1,9 +1,11 @@
 # coding: utf-8
+import tempfile
 import logging
 import asyncio
 import aiohttp
 
-from .models import Task
+from .models import Task, File
+from . import FILES_ROOT
 
 CHUNK_SIZE = 1024
 logger = logging.getLogger(__name__)
@@ -69,7 +71,13 @@ class Worker(object):
             response.close()
 
     def on_finished(self, data):
+        f = File(path=tempfile.mktemp(dir=FILES_ROOT), size=self.total_size)
+        with open(f.path, 'wb') as g:
+            [g.write(chunk) for chunk in self.data]
+        f.save()
         self.task.status = 0o100
+        self.task.file = f
+        self.task.save()
 
     def on_started(self):
         self.task.status = 0o001

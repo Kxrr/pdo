@@ -2,11 +2,10 @@
  * Created by kxrr on 17/2/2.
  */
 
-
 import React from 'react'
-import {Link} from 'react-router'
 
 import NavLink from './NavLink'
+import Button from './Button'
 
 
 export default class Toolbar extends React.Component {
@@ -18,15 +17,13 @@ export default class Toolbar extends React.Component {
     render() {
         return (
             <div>
-                <h2>Toolbar</h2>
-                <NavLink to="addTask" >添加任务</NavLink>
-                <NavLink to="#" onClick={this.props.onRefreshClick}>刷新任务</NavLink>
+                <NavLink to="addTask" ><Button>添加任务</Button></NavLink>
+                <Button onClick={this.props.onRefreshClick}>刷新任务</Button>
             </div>
 
         )
     }
 }
-
 
 Toolbar.propTypes = {
     onTaskAddSubmit: React.PropTypes.func,

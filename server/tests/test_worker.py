@@ -11,13 +11,13 @@ class WorkerTestCase(unittest.TestCase):
         self.loop = self._new_loop()
 
     def test_get(self):
-        data = self.loop.run_until_complete(worker.get('http://httpbin.org/', cookies=None, chunk_size=64))
+        data = self.loop.run_until_complete(worker.get('http://httpbin.org/', headers=None, cookies=None, chunk_size=64))
         self.assertTrue(data)
 
     def test_get_with_cookies(self):
         cookies = {'k1': 'v1'}
         data = self.loop.run_until_complete(
-            worker.get('http://httpbin.org/cookies', cookies=tuple(cookies.items()), chunk_size=64)
+            worker.get('http://httpbin.org/cookies', cookies=tuple(cookies.items()), headers=None, chunk_size=64)
         )
         d = json.loads(self._data2str(data))
         self.assertDictEqual(cookies, d['cookies'])
@@ -31,6 +31,10 @@ class WorkerTestCase(unittest.TestCase):
         self.assertEqual(w.current_size, w.total_size)
         self.assertTrue(w.started)
         self.assertTrue(w.finished)
+
+    def test_Worker_download(self):
+        w = worker.Worker(Task(url='http://dldir1.qq.com/qqfile/qq/QQ8.9/20026/QQ8.9.exe'))
+        self.loop.run_until_complete(w.start())
 
     def _new_loop(self) -> asyncio.unix_events._UnixSelectorEventLoop:
         return asyncio.new_event_loop()

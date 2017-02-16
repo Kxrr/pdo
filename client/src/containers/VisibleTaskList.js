@@ -2,7 +2,7 @@
  * Created by kxrr on 17/2/2.
  */
 import {connect} from 'react-redux'
-import {deleteTask} from '../stores/actions'
+import {deleteTask} from '../actions'
 import TaskList from '../components/TaskList.js'
 
 

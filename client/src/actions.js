@@ -1,9 +1,10 @@
 /**
  * Created by kxrr on 17/2/1.
  */
+
 import 'babel-polyfill'
 import fetch from 'isomorphic-fetch'
-import {makeBody} from '../utils/utils'
+import {makeBody} from './utils/utils'
 import {browserHistory} from 'react-router'
 
 
@@ -78,6 +79,7 @@ export function fetchTasks() {
 
         // 发起请求
         fetch(`${pdoAPI}/tasks`, {mode: 'cors'})
+            .catch(e => console.log(e))
             .then(getJson)
             .then(json => dispatch(receiveTasks(json)))
     }

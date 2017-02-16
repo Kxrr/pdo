@@ -5,6 +5,8 @@
 
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
+import { Button as PButton } from 'react-bootstrap';
+
 
 class TaskAddForm extends Component {
     render() {
@@ -20,7 +22,7 @@ class TaskAddForm extends Component {
                     <label htmlFor="cookies">cookies</label>
                     <Field name="cookies" component="input" type="text"/>
                 </div>
-                <button type="submit" disabled={submitting}>Submit</button>
+                <PButton type="submit" disabled={submitting}>Submit</PButton>
             </form>
         );
     }

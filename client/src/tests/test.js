@@ -3,15 +3,9 @@
  */
 
 
-import { addTask, deleteTask, setFilter, fetchTasks } from '../stores/actions'
-import {store} from '../stores/store'
+import { addTask, fetchTasks } from '../actions'
+import {store} from '../configStore'
 
-function callback() {
-    let currentState = store.getState();
-    console.log(currentState);
-}
-
-let unsubscribeFn = store.subscribe(callback);
 
 
 export const loadTestData = function () {

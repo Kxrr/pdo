@@ -3,7 +3,7 @@
  */
 
 import TaskAddForm from '../components/TaskAddForm'
-import {createTask} from '../stores/actions'
+import {createTask} from '../actions'
 
 
 import {connect} from 'react-redux'
@@ -20,4 +20,3 @@ const mapDispatchToProps = (dispatch) => {
 
 const PopTaskAddForm = connect(mapStateToProps, mapDispatchToProps)(TaskAddForm);
 export default PopTaskAddForm;
-

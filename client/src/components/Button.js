@@ -2,6 +2,7 @@
  * Created by kxrr on 17/2/3.
  */
 import React from 'react';
+import { Button as BootstrapButton } from 'react-bootstrap';
 
 
 export default class Button extends React.Component {
@@ -11,13 +12,11 @@ export default class Button extends React.Component {
     }
 
     render(){
-        return (<button onClick={this.props.onClick}>{this.props.text}</button>)
+        return (<BootstrapButton {...this.props}>{this.props.children}</BootstrapButton>)
     }
 }
 
 
 Button.propTypes = {
-    text : React.PropTypes.string.isRequired,
-    onClick: React.PropTypes.func.isRequired
-};
 
+};

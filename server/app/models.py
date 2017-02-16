@@ -1,13 +1,12 @@
 # coding: utf-8
 import datetime
-from os.path import join
 
 from peewee import *
 from playhouse.sqlite_ext import SqliteExtDatabase
 
-from . import PROJECT_ROOT
+from . import DB_PATH
 
-db = SqliteExtDatabase(join(PROJECT_ROOT, 'pdo-server.db'))
+db = SqliteExtDatabase(DB_PATH)
 
 
 class BaseModel(Model):
@@ -16,8 +15,8 @@ class BaseModel(Model):
 
 
 class File(BaseModel):
-    filename = CharField()
     path = CharField()
+    size = IntegerField()
 
 
 class Task(BaseModel):
@@ -50,4 +49,4 @@ class Task(BaseModel):
 
 def create_tables():
     db.connect()
-    db.create_tables([Task])
+    db.create_tables([Task, File])

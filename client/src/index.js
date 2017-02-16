@@ -2,14 +2,12 @@
  * Created by kxrr on 17/2/2.
  */
 
-import React from 'react'
 import ReactDOM from 'react-dom'
-
 import Root from './components/Root'
-import {store} from './stores/store'
+import { store } from './configStore'
 
 ReactDOM.render(
-    Root({store}),
+    Root({ store }),
     document.body.appendChild(document.createElement('div'))
 );
 

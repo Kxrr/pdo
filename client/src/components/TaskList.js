@@ -4,7 +4,8 @@
 
 import React from 'react';
 import Task  from './Task'
-import {fetchTasks} from '../stores/actions'
+import {fetchTasks} from '../actions'
+import {Table} from 'react-bootstrap'
 
 
 export default class TaskList extends React.Component {
@@ -15,7 +16,7 @@ export default class TaskList extends React.Component {
 
     componentDidMount() {
         const {dispatch} = this.props;
-        this.intervalId = setInterval(()=> dispatch(fetchTasks()), 5000);
+        this.intervalId = setInterval(() => dispatch(fetchTasks()), 50000000);
     }
 
     componentWillUnmount() {
@@ -25,12 +26,21 @@ export default class TaskList extends React.Component {
     render() {
         return (
             <div>
-                <h2>TaskList</h2>
-                <ul>
-                    {this.props.tasks.items.map(task => <Task key={task.id} task={task} />)}
-                </ul>
-            </div>
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>URL</th>
+                            <th>PROGRESS</th>
+                            <th>RETRIEVE</th>
+                        </tr>
+                    </thead>
 
+                    <tbody>
+                        {this.props.tasks.items.map(task => <Task key={task.id} task={task}/>)}
+                    </tbody>
+                </Table>
+            </div>
         )
     }
 }

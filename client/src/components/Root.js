@@ -1,6 +1,7 @@
 /**
  * Created by kxrr on 17/2/4.
  */
+
 import React, {PropTypes} from 'react';
 import {Provider} from 'react-redux';
 import {Router, Route, hashHistory, IndexRoute, browserHistory} from 'react-router';

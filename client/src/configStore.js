@@ -9,10 +9,8 @@ import thunkMiddleware from 'redux-thunk'
 import { pdoApp } from './reducers';
 
 const loggerMiddleware = createLogger();
-import { combineForms } from 'react-redux-form';
 
 export let store = createStore(
     pdoApp,
     applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
-
