@@ -4,7 +4,7 @@
 
 import 'babel-polyfill'
 import fetch from 'isomorphic-fetch'
-import {makeBody} from './utils/utils'
+import {makeBody} from './utils'
 import {browserHistory} from 'react-router'
 
 
@@ -64,7 +64,7 @@ export function receiveTasks(json) {
     }
 }
 
-const pdoAPI = 'http://localhost:3000';
+export const pdoAPI = 'http://localhost:3000';
 
 // async
 export function fetchTasks() {

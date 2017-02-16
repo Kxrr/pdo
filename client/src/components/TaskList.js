@@ -16,7 +16,7 @@ export default class TaskList extends React.Component {
 
     componentDidMount() {
         const {dispatch} = this.props;
-        this.intervalId = setInterval(() => dispatch(fetchTasks()), 50000000);
+        this.intervalId = setInterval(() => dispatch(fetchTasks()), 500);
     }
 
     componentWillUnmount() {

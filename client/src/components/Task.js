@@ -5,6 +5,8 @@
 import React from 'react';
 import {ProgressBar, OverlayTrigger, Tooltip} from 'react-bootstrap'
 
+import {pdoAPI} from '../actions'
+
 
 export default class Task extends React.Component {
     constructor(props) {
@@ -27,7 +29,7 @@ export default class Task extends React.Component {
                         </OverlayTrigger>
                     </td>
                     <td>
-                        {/*retrive link*/}
+                        <a href={ task.filename ? `${pdoAPI}/retrieve/${task.filename}` : '#'}>x</a>
                     </td>
                 </tr>
         )

@@ -5,7 +5,7 @@ from functools import partial
 
 from aiohttp import web
 
-from app.worker import DummyWorker
+from . import FILES_ROOT
 from .models import Task
 from .worker import Worker
 from .utils import json_serial, cors_middleware
@@ -63,7 +63,7 @@ def make_app(loop):
     app.router.add_get('/', hello)
     app.router.add_route('*', '/tasks', TaskWorkersView)
     app.router.add_route('*', '/tasks/{task_id}', TaskWorkerView)
-
+    app.router.add_static('/retrieve/', path=FILES_ROOT)
     return app
 
 

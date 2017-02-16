@@ -1,4 +1,5 @@
 # coding: utf-8
+from os import path
 import tempfile
 import logging
 import asyncio
@@ -38,7 +39,7 @@ class Worker(object):
         self.current_size = 0
         self.data = []
 
-        self.chunk_processor = []
+        self.chunk_processors = []
         self.add_default_processors()
 
     @asyncio.coroutine
@@ -50,12 +51,13 @@ class Worker(object):
             get(self.task.url, self.task.cookies, self.task.headers, CHUNK_SIZE, callback=self._process_chunk)
         self.finished = True
         self.on_finished(data)
-        logger.info(self.__dict__)
 
     def to_dict(self):
         d = self.task.to_dict()
         d['progress'] = self.current_size / self.total_size if self.total_size else 0
         d['total_size'] = self.total_size
+        if self.finished:
+            d['filename'] = path.split(self.task.file.path)[-1]
         return d
 
     @property
@@ -73,7 +75,8 @@ class Worker(object):
     def on_finished(self, data):
         f = File(path=tempfile.mktemp(dir=FILES_ROOT), size=self.total_size)
         with open(f.path, 'wb') as g:
-            [g.write(chunk) for chunk in self.data]
+            while self.data:
+                g.write(self.data.pop(0))
         f.save()
         self.task.status = 0o100
         self.task.file = f
@@ -85,18 +88,15 @@ class Worker(object):
     def add_default_processors(self):
         self.add_chunk_processor(self.size_processor, self.data_processor)
 
-    def add_chunk_processor(self, *funcs):
-        self.chunk_processor += funcs
+    def add_chunk_processor(self, *processors):
+        self.chunk_processors += processors
 
     def _process_chunk(self, chunk):
-        for p in list(set(self.chunk_processor)):
+        for p in list(set(self.chunk_processors)):
             p(chunk)
 
     def size_processor(self, chunk):
         self.current_size += len(chunk)
-
-    def log_processor(self, chunk):
-        logger.debug(chunk)
 
     def data_processor(self, chunk):
         self.data.append(chunk)
