@@ -4,7 +4,7 @@
 
 import 'babel-polyfill'
 import fetch from 'isomorphic-fetch'
-import {makeBody} from './utils'
+import {makeBody} from './core/request'
 import {browserHistory} from 'react-router'
 
 
@@ -16,11 +16,9 @@ export const INVALIDATE_TASK = 'INVALIDATE_TASK';
 export const SET_FILTER = 'SET_FILTER';
 
 export const REQUEST_TASKS = 'REQUEST_TASKS';
-export const RECEIVE_TASKS = 'RECEIVE_TASKS';
+export const UPDATE_TASK = 'RECEIVE_TASK';  // action for message pushed by server
+export const RECEIVE_TASKS = 'RECEIVE_TASKS';  //
 
-// export const FETCH_TASK_REQUEST = 'FETCH_TASK_REQUEST';
-// export const FETCH_TASK_SUCCESS = 'FETCH_TASK_SUCCESS';
-// export const FETCH_TASK_FAILURE = 'FETCH_TASK_FAILURE';
 
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
 
@@ -42,6 +40,7 @@ export function setFilter(filter) {
 }
 
 
+
 export function invalidateTasks() {
     return {type: INVALIDATE_TASK}
 
@@ -55,6 +54,12 @@ export function requestTasks() {
 
 }
 
+export function updateTask(item) {
+    return {
+        type: UPDATE_TASK,
+        item: item
+    }
+}
 
 export function receiveTasks(json) {
     return {

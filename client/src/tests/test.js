@@ -3,7 +3,7 @@
  */
 
 
-import { addTask, fetchTasks } from '../actions'
+import { addTask, fetchTasks, updateTask } from '../actions'
 import {store} from '../configStore'
 
 
@@ -14,4 +14,8 @@ export const loadTestData = function () {
 };
 
 
-store.dispatch(fetchTasks());
+// store.dispatch(fetchTasks());
+
+store.dispatch(
+    updateTask({id: 1})
+);
