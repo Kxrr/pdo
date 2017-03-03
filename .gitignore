@@ -12,3 +12,7 @@ venv/
 # others
 *.db
 *.log
+.DS_Store
+files
+db
+

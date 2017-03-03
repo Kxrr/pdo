@@ -1,0 +1,15 @@
+server:
+    build: ./deploy/docker/server
+    command: python /code/manage.py runserver
+    volumes:
+        - ./server:/code
+    ports:
+        - "8300:8300"
+
+client:
+    build: ./deploy/docker/client
+    command: bash -c 'npm install && npm start'
+    volumes:
+        - ./client:/code
+    ports:
+        - "8380:8380"

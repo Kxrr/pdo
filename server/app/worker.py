@@ -1,4 +1,5 @@
 # coding: utf-8
+from io import BytesIO
 from os import path
 import tempfile
 import logging
@@ -7,13 +8,14 @@ import aiohttp
 
 from .models import Task, File
 from . import FILES_ROOT
+from .utils import normalize_dict
 
 CHUNK_SIZE = 1024
 logger = logging.getLogger(__name__)
 
 
 @asyncio.coroutine
-def get(url, cookies, headers, chunk_size, callback=None) -> list:
+def get(url: str, cookies: tuple, headers: tuple, chunk_size: int, callback=None) -> list:
     data = []
     with aiohttp.ClientSession(cookies=cookies, headers=headers) as s:
         response = yield from s.get(url)
@@ -30,6 +32,8 @@ def get(url, cookies, headers, chunk_size, callback=None) -> list:
 
 
 class Worker(object):
+    chunk_processors = set()
+
     def __init__(self, task: Task):
         self.task = task
 
@@ -37,10 +41,8 @@ class Worker(object):
         self.finished = False
         self.total_size = 0
         self.current_size = 0
-        self.data = []
-
-        self.chunk_processors = []
-        self.add_default_processors()
+        self.last_report_size = 0
+        self.data = BytesIO()
 
     @asyncio.coroutine
     def start(self):
@@ -50,20 +52,32 @@ class Worker(object):
         data = yield from \
             get(self.task.url, self.task.cookies, self.task.headers, CHUNK_SIZE, callback=self._process_chunk)
         self.finished = True
-        self.on_finished(data)
+        self.on_success(data)
+        self._process_chunk(b'')  # call all the callback after done
 
-    def to_dict(self):
+    def to_dict(self, normalized=False):
         d = self.task.to_dict()
-        d['progress'] = self.current_size / self.total_size if self.total_size else 0
+        d['current_size'] = self.current_size
         d['total_size'] = self.total_size
         if self.finished:
             d['filename'] = path.split(self.task.file.path)[-1]
+        if normalized:
+            return normalize_dict(d)
         return d
 
     @property
     def id(self):
         # use the unique id of `task`
         return self.task.id
+
+    @classmethod
+    def add_chunk_processors(cls, *processors):
+        """
+        A chunk processor should receive params of (chunk, worker_instance) .
+        """
+
+        for p in processors:
+            cls.chunk_processors.add(p)
 
     @asyncio.coroutine
     def set_size(self):
@@ -72,34 +86,28 @@ class Worker(object):
             self.total_size = int(response.headers['Content-Length'])
             response.close()
 
-    def on_finished(self, data):
-        f = File(path=tempfile.mktemp(dir=FILES_ROOT), size=self.total_size)
+    def on_started(self):
+        self.task.status = 0o001
+
+    def on_success(self, data):
+        f = File(
+            path=tempfile.mktemp(dir=FILES_ROOT, suffix='_{}'.format(path.basename(self.task.url))),
+            size=self.total_size
+        )
+        self.data.seek(0)
         with open(f.path, 'wb') as g:
-            while self.data:
-                g.write(self.data.pop(0))
+            g.write(self.data.read())
         f.save()
         self.task.status = 0o100
         self.task.file = f
         self.task.save()
 
-    def on_started(self):
-        self.task.status = 0o001
-
-    def add_default_processors(self):
-        self.add_chunk_processor(self.size_processor, self.data_processor)
-
-    def add_chunk_processor(self, *processors):
-        self.chunk_processors += processors
-
     def _process_chunk(self, chunk):
-        for p in list(set(self.chunk_processors)):
-            p(chunk)
-
-    def size_processor(self, chunk):
+        self.data.write(chunk)
         self.current_size += len(chunk)
 
-    def data_processor(self, chunk):
-        self.data.append(chunk)
+        for p in self.chunk_processors:
+            p(chunk, self)
 
 
 class DummyWorker(Worker):
@@ -110,3 +118,7 @@ class DummyWorker(Worker):
 
     def start(self):
         raise RuntimeError('{0} is unable to start.'.format(type(self)))
+
+
+def register_processor(p):
+    Worker.add_chunk_processors(p)

@@ -1,0 +1,280 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "",
+        "title": "PDO",
+        "description": ""
+    },
+    "host": "localhost:3000",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/tasks/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET-task",
+                "summary": "Get Task",
+                "tags": [
+                    "Tasks"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "add_time": {
+                                            "type": "string"
+                                        },
+                                        "url": {
+                                            "type": "string"
+                                        },
+                                        "cookies": {
+                                            "type": [
+                                                "null",
+                                                "string"
+                                            ]
+                                        },
+                                        "headers": {
+                                            "type": [
+                                                "null",
+                                                "string"
+                                            ]
+                                        },
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "_status": {
+                                            "type": "integer"
+                                        },
+                                        "progress": {
+                                            "type": "number"
+                                        },
+                                        "total_size": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                },
+                                "code": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "application/json": {
+                                "data": {
+                                    "status": "未开始",
+                                    "add_time": "2017-02-12T00:52:33.960783",
+                                    "url": "http://localhost:3000/tasks",
+                                    "cookies": null,
+                                    "headers": null,
+                                    "id": 9,
+                                    "_status": 0,
+                                    "progress": 0,
+                                    "total_size": 0
+                                },
+                                "code": 200
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "PUT-task",
+                "summary": "Update Task",
+                "tags": [
+                    "Tasks"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/task-output"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/task-output"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DELETE-task",
+                "summary": "Delete Task",
+                "tags": [
+                    "Tasks"
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/tasks": {
+            "get": {
+                "operationId": "LIST-tasks",
+                "summary": "List Tasks",
+                "tags": [
+                    "Tasks"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/task-output"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "POST-task",
+                "summary": "Create Task",
+                "tags": [
+                    "Tasks"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/task-output"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/task-output"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "task": {
+            "title": "Task",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "cookies": {
+                    "type": "string"
+                },
+                "headers": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "add_time": {
+                    "type": "string"
+                },
+                "total_size": {
+                    "type": "integer"
+                },
+                "progress": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "url"
+            ]
+        },
+        "task-output": {
+            "title": "Task Output",
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "string"
+                        },
+                        "add_time": {
+                            "type": "string"
+                        },
+                        "url": {
+                            "type": "string"
+                        },
+                        "cookies": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "headers": {
+                            "type": [
+                                "null",
+                                "string"
+                            ]
+                        },
+                        "id": {
+                            "type": "integer"
+                        },
+                        "_status": {
+                            "type": "integer"
+                        },
+                        "progress": {
+                            "type": "number"
+                        },
+                        "total_size": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "code": {
+                    "type": "integer"
+                }
+            },
+            "example": {
+                "data": {
+                    "status": "未开始",
+                    "add_time": "2017-02-12T00:52:33.960783",
+                    "url": "http://localhost:3000/tasks",
+                    "cookies": null,
+                    "headers": null,
+                    "id": 9,
+                    "_status": 0,
+                    "progress": 0,
+                    "total_size": 0
+                },
+                "code": 201
+            }
+        }
+    }
+}

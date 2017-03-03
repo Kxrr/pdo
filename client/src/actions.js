@@ -4,8 +4,8 @@
 
 import 'babel-polyfill'
 import fetch from 'isomorphic-fetch'
-import {makeBody} from './core/request'
-import {browserHistory} from 'react-router'
+import { makeBody, api } from './core/request'
+import { browserHistory } from 'react-router'
 
 
 // 定义 action.type
@@ -16,11 +16,14 @@ export const INVALIDATE_TASK = 'INVALIDATE_TASK';
 export const SET_FILTER = 'SET_FILTER';
 
 export const REQUEST_TASKS = 'REQUEST_TASKS';
-export const UPDATE_TASK = 'RECEIVE_TASK';  // action for message pushed by server
+export const UPDATE_TASK = 'UPDATE_TASK';  // action for message pushed by server
 export const RECEIVE_TASKS = 'RECEIVE_TASKS';  //
 
-
+export const CLOSE_TASK_ADD = 'CLOSE_TASK_ADD';
+export const OPEN_TASK_ADD = 'OPEN_TASK_ADD';
 export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
+
+export const SHOW_MESSAGE = 'SHOW_MESSAGE';
 
 
 
@@ -69,7 +72,22 @@ export function receiveTasks(json) {
     }
 }
 
-export const pdoAPI = 'http://localhost:3000';
+
+export function closeTaskAdd() {
+    return { type: CLOSE_TASK_ADD }
+}
+
+
+export function openTaskAdd() {
+    return { type: OPEN_TASK_ADD }
+}
+
+
+export function showMessage(msg) {
+    return { type: SHOW_MESSAGE, msg }
+
+}
+
 
 // async
 export function fetchTasks() {
@@ -83,10 +101,10 @@ export function fetchTasks() {
         dispatch(requestTasks());
 
         // 发起请求
-        fetch(`${pdoAPI}/tasks`, {mode: 'cors'})
+        fetch(`${api}/tasks`, {mode: 'cors'})
             .catch(e => console.log(e))
             .then(getJson)
-            .then(json => dispatch(receiveTasks(json)))
+            .then(json => dispatch(receiveTasks(json)));
     }
 }
 
@@ -99,7 +117,7 @@ export function createTaskSuccess(){
 export function createTask(data) {
         return function (dispatch) {
             console.log(data);
-            fetch(`${pdoAPI}/tasks`, {mode: 'cors', method: 'POST', body: makeBody(data)})
+            fetch(`${api}/tasks`, {mode: 'cors', method: 'POST', body: makeBody(data)})
                 .then(dispatch(createTaskSuccess()))
                 .then(browserHistory.push('/'))
     }

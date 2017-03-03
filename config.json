@@ -1,0 +1,11 @@
+{
+  "client": {
+    "port": 8080
+  },
+
+  "server": {
+    "host": "kxrr.us",
+    "port": 3000,
+    "api": "kxrr.us:3000"
+  }
+}

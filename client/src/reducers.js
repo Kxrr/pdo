@@ -2,33 +2,40 @@
  * Created by kxrr on 17/2/1.
  */
 
-import { Filters, ADD_TASK, DELETE_TASK, REQUEST_TASKS, RECEIVE_TASKS, INVALIDATE_TASK, UPDATE_TASK } from './actions'
+import { Filters, REQUEST_TASKS, RECEIVE_TASKS, INVALIDATE_TASK, UPDATE_TASK,
+    OPEN_TASK_ADD, CLOSE_TASK_ADD } from './actions'
 import { merge } from './core/item'
 import { reducer as formReducer } from 'redux-form'
 
-let globalID = 0;
+
+// Define all initial state here
 const initialState = {
     tasks: {
         isFetching: false,
         items: []
+    },
+    modal: {
+        showTaskAdd: false
     },
     filter: Filters.SHOW_ALL,
     form: {}
 };
 
 
-export function tasks(state={
-    isFetching: false,
-    items: [],
-}, action) {
+export function modal(state, action) {
+    switch (action.type){
+        case OPEN_TASK_ADD:
+            return Object.assign({}, state, {showTaskAdd: true});
+        case CLOSE_TASK_ADD:
+            return Object.assign({}, state, {showTaskAdd: false});
+        default:
+            return state;
+    }
+}
+
+
+export function tasks(state, action) {
     switch (action.type) {
-        case ADD_TASK:
-            let newItem = {url: action.url, id: globalID++};
-            let nextState = Object.assign({}, state);
-            nextState.items.push(newItem);
-            return nextState;
-        case DELETE_TASK:
-            return state.filter((task, i) => (task.id != action.id));
         case REQUEST_TASKS:
             return Object.assign({}, state, {isFetching: true});
         case RECEIVE_TASKS:
@@ -50,6 +57,7 @@ export function tasks(state={
 export function pdoApp(state=initialState, action) {
     return {
         "tasks": tasks(state.tasks, action),
-        "form": formReducer(state.form, action)
+        "form": formReducer(state.form, action),
+        "modal": modal(state.modal, action)
     }
 }

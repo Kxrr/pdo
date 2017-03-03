@@ -1,15 +1,15 @@
 # coding: utf-8
-import json
 import asyncio
-from functools import partial
 
 from aiohttp import web
+import socketio
 
-from . import FILES_ROOT
+from . import logger, FILES_ROOT
 from .models import Task
-from .worker import Worker
-from .utils import json_serial, cors_middleware
+from .worker import Worker, register_processor
+from .utils import cors_middleware, dumps
 
+sio = socketio.AsyncServer()
 pdo_loop = asyncio.new_event_loop()
 """:type: asyncio.unix_events._UnixSelectorEventLoop"""
 
@@ -22,7 +22,6 @@ async def hello(request):
 
 class AppView(web.View):
     def jsonify(self, data, **kwargs):
-        dumps = partial(json.dumps, default=json_serial)
         return web.json_response(data, dumps=dumps)
 
     def response(self, data, code=200):
@@ -57,9 +56,27 @@ class TaskWorkerView(AppView):
             return self.fail('TaskWorker {} not exists.'.format(task_id), code=404)
         return self.response(worker.to_dict(), code=200)
 
+    async def delete(self):
+        data = await self.request.post()
+        id_to_worker.pop(data['task_id'])
+        return self.response({}, code=204)
+
+
+@register_processor
+def emit_update_item(chunk, worker: Worker):
+    if not chunk or (worker.current_size - worker.last_report_size) > 312400:
+        pdo_loop.create_task(sio.emit('updateItem', data=worker.to_dict(normalized=True)))
+        worker.last_report_size = worker.current_size
+
+
+@sio.on('connect')
+def connect(sid, env):
+    logger.info('{} connected'.format(sid))
+
 
 def make_app(loop):
     app = web.Application(loop=loop, middlewares=[cors_middleware])
+    sio.attach(app)
     app.router.add_get('/', hello)
     app.router.add_route('*', '/tasks', TaskWorkersView)
     app.router.add_route('*', '/tasks/{task_id}', TaskWorkerView)
@@ -67,5 +84,5 @@ def make_app(loop):
     return app
 
 
-def run():
-    web.run_app(make_app(pdo_loop), port=3000)
+def run(port=8300):
+    web.run_app(make_app(pdo_loop), port=port)

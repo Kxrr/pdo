@@ -17,8 +17,8 @@ export default class Toolbar extends React.Component {
     render() {
         return (
             <div>
-                <NavLink to="addTask" ><Button>添加任务</Button></NavLink>
-                <Button onClick={this.props.onRefreshClick}>刷新任务</Button>
+                <Button onClick={this.props.openTaskAdd}>Add Task</Button>
+                <Button onClick={this.props.onRefreshClick}>Refresh All Task</Button>
             </div>
 
         )
@@ -26,6 +26,5 @@ export default class Toolbar extends React.Component {
 }
 
 Toolbar.propTypes = {
-    onTaskAddSubmit: React.PropTypes.func,
     onRefreshClick: React.PropTypes.func
 };

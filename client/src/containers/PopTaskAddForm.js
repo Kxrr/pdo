@@ -3,7 +3,7 @@
  */
 
 import TaskAddForm from '../components/TaskAddForm'
-import {createTask} from '../actions'
+import { createTask, closeTaskAdd } from '../actions'
 
 
 import {connect} from 'react-redux'
@@ -14,7 +14,16 @@ const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createTask: (data) => dispatch(createTask(data))
+        createTask: function(data) {
+            dispatch(createTask(data));
+            dispatch(closeTaskAdd());
+        },
+
+        closeTaskAdd: function (event) {
+            event.preventDefault();
+            dispatch(closeTaskAdd());
+
+        }
     }
 };
 

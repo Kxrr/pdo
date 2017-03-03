@@ -5,14 +5,15 @@
 import {connect} from 'react-redux'
 import Toolbar from '../components/Toolbar.js'
 
-import {fetchTasks} from '../actions'
+import { fetchTasks, openTaskAdd } from '../actions'
 
 const mapStateToProps = (state) => state;
 
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onRefreshClick: () => dispatch(fetchTasks())
+        onRefreshClick: () => dispatch(fetchTasks()),
+        openTaskAdd: () => dispatch(openTaskAdd())
     }
 };
 

@@ -1,2 +1,0 @@
-aiohttp==1.2.0
-peewee==2.8.5

@@ -5,7 +5,7 @@
 import React from 'react';
 import {ProgressBar, OverlayTrigger, Tooltip} from 'react-bootstrap'
 
-import {pdoAPI} from '../actions'
+import {api} from '../core/request'
 
 
 export default class Task extends React.Component {
@@ -16,20 +16,24 @@ export default class Task extends React.Component {
 
     render(){
         const task = this.props.task;
-        const _progress = task.progress * 100;
-        const tooltip = <Tooltip id={`tooltip-${task.id}`}>{_progress}</Tooltip>;
-        const fixedProgress = Math.round(_progress.toFixed(1));
+
+        const progress = task.current_size / task.total_size * 100;
+        const progressTooltip = <Tooltip id={`progress-tooltip-${task.id}`}>{`${task.current_size} / ${task.total_size}`}</Tooltip>;
+        const fixedProgress = Math.round(progress.toFixed(1));
+
+        const success = <a href={ task.filename ? `${api}/retrieve/${task.filename}` : '#'}>success</a>;
+        // const stateTooltip  = <Tooltip id={`state-tooltip-${task.id}`}>{`${task.state}`}</Tooltip>;
         return (
                 <tr>
                     <td>{task.id}</td>
                     <td>{task.url}</td>
                     <td>
-                        <OverlayTrigger placement="left" overlay={tooltip}>
+                        <OverlayTrigger placement="left" overlay={progressTooltip}>
                             <ProgressBar now={fixedProgress} label={` ${fixedProgress}% `} />
                         </OverlayTrigger>
                     </td>
                     <td>
-                        <a href={ task.filename ? `${pdoAPI}/retrieve/${task.filename}` : '#'}>x</a>
+                        {task.state == 'success' ? success : <span>{task.state}</span>}
                     </td>
                 </tr>
         )

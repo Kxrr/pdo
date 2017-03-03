@@ -16,7 +16,6 @@ const Root = ({store}) => (
         <Router history={hashHistory}>
             <Route path="/" component={App}>
                 <IndexRoute component={Home}/>
-                <Route path="/addTask" component={PopTaskAddForm} />
                 <Route path="/help" component={Help}/>
             </Route>
         </Router>

@@ -6,12 +6,14 @@
 import React from 'react';
 import VisibleTaskList from '../containers/VisibleTaskList'
 import UpperToolbar from '../containers/UpperToolbar'
+import PopTaskAddForm from '../containers/PopTaskAddForm'
 
 
 const Home = ({ param }) => (
   <div>
       <UpperToolbar/>
       <VisibleTaskList/>
+      <PopTaskAddForm/>
   </div>
 );
 

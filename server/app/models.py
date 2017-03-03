@@ -21,10 +21,10 @@ class File(BaseModel):
 
 class Task(BaseModel):
     STATE_TO_TEXT = {
-        0o000: '未开始',
-        0o001: '下载中',
-        0o010: '错误',
-        0o100: '已完成',
+        0o000: 'pending',
+        0o001: 'started',
+        0o010: 'failure',
+        0o100: 'success',
     }
 
     id = PrimaryKeyField()
@@ -38,8 +38,7 @@ class Task(BaseModel):
 
     def to_dict(self):
         data = self._data.copy()
-        data['_status'] = data['status']
-        data['status'] = self.STATE_TO_TEXT[data['_status']]
+        data['state'] = self.STATE_TO_TEXT[data['status']]
         data['id'] = self.id
         return data
 
@@ -47,6 +46,7 @@ class Task(BaseModel):
         return '<Task {0}>'.format(self.url)
 
 
-def create_tables():
-    db.connect()
-    db.create_tables([Task, File])
+def check_tables():
+    for model in (Task, File):
+        if not model.table_exists():
+            model.create_table()

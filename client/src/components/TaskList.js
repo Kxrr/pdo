@@ -3,9 +3,13 @@
  */
 
 import React from 'react';
+import { Table } from 'react-bootstrap'
+import io from 'socket.io-client'
+
 import Task  from './Task'
-import {fetchTasks} from '../actions'
-import {Table} from 'react-bootstrap'
+
+import { fetchTasks, updateTask } from '../actions'
+import { socketApi } from '../core/request'
 
 
 export default class TaskList extends React.Component {
@@ -15,8 +19,15 @@ export default class TaskList extends React.Component {
     }
 
     componentDidMount() {
-        const {dispatch} = this.props;
-        this.intervalId = setInterval(() => dispatch(fetchTasks()), 500);
+        const { dispatch } = this.props;
+        dispatch(fetchTasks());
+        this.initSocket();
+    }
+
+    initSocket(){
+        const { dispatch } = this.props;
+        let socket = io.connect(socketApi, {origins: '*'});
+        socket.on('updateItem', (item => dispatch(updateTask(item))));
     }
 
     componentWillUnmount() {
@@ -32,7 +43,7 @@ export default class TaskList extends React.Component {
                             <th>#</th>
                             <th>URL</th>
                             <th>PROGRESS</th>
-                            <th>RETRIEVE</th>
+                            <th>STATE</th>
                         </tr>
                     </thead>
 

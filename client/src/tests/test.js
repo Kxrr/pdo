@@ -3,7 +3,7 @@
  */
 
 
-import { addTask, fetchTasks, updateTask } from '../actions'
+import { addTask, updateTask } from '../actions'
 import {store} from '../configStore'
 
 

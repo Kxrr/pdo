@@ -3,27 +3,41 @@
  */
 
 
-import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
-import { Button as PButton } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Field, reduxForm } from 'redux-form';
+import { Button as PButton, Modal } from 'react-bootstrap';
 
 
 class TaskAddForm extends Component {
     render() {
-        const {handleSubmit, submitting} = this.props;
-        console.log(this.props);
+        console.log('close task', this.props.closeTaskAdd);
+        const { handleSubmit, submitting } = this.props;
         return (
-            <form onSubmit={handleSubmit(this.props.createTask)}>
-                <div>
-                    <label htmlFor="url">url</label>
-                    <Field name="url" component="input" type="text"/>
-                </div>
-                <div>
-                    <label htmlFor="cookies">cookies</label>
-                    <Field name="cookies" component="input" type="text"/>
-                </div>
-                <PButton type="submit" disabled={submitting}>Submit</PButton>
-            </form>
+            <Modal show={this.props.modal.showTaskAdd} >
+
+                <Modal.Header>
+                    Add Task
+                </Modal.Header>
+
+                <Modal.Body>
+                    <form >
+                        <div>
+                            <label htmlFor="url">url</label>
+                            <Field name="url" component="input" type="text"/>
+                        </div>
+                        <div>
+                            <label htmlFor="cookies">cookies</label>
+                            <Field name="cookies" component="input" type="text"/>
+                        </div>
+                    </form>
+                </Modal.Body>
+
+                <Modal.Footer>
+                        <PButton disabled={submitting} onClick={handleSubmit(this.props.createTask)}>Submit</PButton>
+                        <PButton onClick={this.props.closeTaskAdd}>Cancel</PButton>
+                </Modal.Footer>
+
+            </Modal>
         );
     }
 }
