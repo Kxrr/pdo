@@ -2,8 +2,8 @@
  * Created by kxrr on 17/2/24.
  */
 
-
-import {SERVER_PORT, SERVER_HOST} from '../../config'
+const SERVER_HOST = "kxrr.us";
+const SERVER_PORT = 8300;
 
 export const api = `http://${SERVER_HOST}:${SERVER_PORT}`;
 export const socketApi = api;
