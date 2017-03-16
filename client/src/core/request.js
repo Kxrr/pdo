@@ -2,11 +2,14 @@
  * Created by kxrr on 17/2/24.
  */
 
-const SERVER_HOST = "kxrr.us";
-const SERVER_PORT = 8300;
 
-export const api = `http://${SERVER_HOST}:${SERVER_PORT}`;
-export const socketApi = api;
+// Defined by environment variables which are passed by webpack
+const SERVER_API_HOST = process.env.SERVER_API_HOST;
+const SERVER_API_PORT = process.env.SERVER_API_PORT;
+
+export const socketApi = `${SERVER_API_HOST}:${SERVER_API_PORT}`;
+export const api = `http://${socketApi}`;
+
 
 export function makeBody(data) {
     let formData = new FormData();

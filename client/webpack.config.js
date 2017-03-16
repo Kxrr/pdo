@@ -1,8 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
-var port = 8380;
+var port = 8080;
 
-// var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 module.exports = {
     devServer: {
         historyApiFallback: true,
@@ -40,5 +39,11 @@ module.exports = {
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            'process.env.SERVER_API_PORT': JSON.stringify(process.env.SERVER_API_PORT),
+            'process.env.SERVER_API_HOST': JSON.stringify(process.env.SERVER_API_HOST)
+        }),
+
+
     ]
 };

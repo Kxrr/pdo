@@ -12,6 +12,6 @@ PDO
 How to deploy
 -------------
 
-* Write your ``SERVER_HOST`` in ``client/config.js`` for socket.io usage
-* Run ``docker-compose up``, the service is running on port `8380`
+* Write your pulished ``SERVER_API_HOST`` that user can visit in ``docker-compose.yaml`` such as `kxrr.us`
+* Run ``docker-compose up``, the service will be running on port `8080`
 

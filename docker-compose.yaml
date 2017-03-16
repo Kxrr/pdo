@@ -1,15 +1,24 @@
-server:
-    build: ./deploy/docker/server
-    command: python /code/manage.py runserver
-    volumes:
-        - ./server:/code
-    ports:
-        - "8300:8300"
+version: '2'
 
-client:
-    build: ./deploy/docker/client
-    command: bash -c 'npm install && npm start'
-    volumes:
-        - ./client:/code
-    ports:
-        - "8380:8380"
+services:
+    server:
+        build: ./deploy/docker/server
+        volumes:
+            - ./server:/code
+        ports:
+            - "8000:8000"
+        tty: true
+
+    client:
+        build: ./deploy/docker/client
+        depends_on:
+            - server
+        volumes:
+            - ./client:/code
+            - /code/node_modules
+        ports:
+            - "8080:8080"
+        environment:
+            - SERVER_API_HOST=127.0.0.1
+            - SERVER_API_PORT=8000
+            - PACKAGE_CONTROLLER=cnpm

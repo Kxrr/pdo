@@ -15,7 +15,7 @@ def main():
 
     if args.cmd == 'runserver':
         check_tables()
-        run()
+        run(port=8000)
 
 
 if __name__ == '__main__':
