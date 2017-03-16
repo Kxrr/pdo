@@ -2,7 +2,9 @@ version: '2'
 
 services:
     server:
-        build: ./deploy/docker/server
+        build:
+            context: .
+            dockerfile: ./deploy/docker/server/Dockerfile
         volumes:
             - ./server:/code
         ports:
@@ -10,9 +12,11 @@ services:
         tty: true
 
     client:
-        build: ./deploy/docker/client
-        depends_on:
-            - server
+        build:
+            context: .
+            dockerfile: ./deploy/docker/client/Dockerfile
+            args:
+                - PACKAGE_CONTROLLER=npm
         volumes:
             - ./client:/code
             - /code/node_modules
@@ -21,4 +25,4 @@ services:
         environment:
             - SERVER_API_HOST=127.0.0.1
             - SERVER_API_PORT=8000
-            - PACKAGE_CONTROLLER=cnpm
+

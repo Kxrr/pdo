@@ -84,5 +84,5 @@ def make_app(loop):
     return app
 
 
-def run(**kwargs):
-    web.run_app(make_app(pdo_loop), **kwargs)
+def run(port):
+    web.run_app(make_app(pdo_loop), port=port)

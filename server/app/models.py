@@ -50,3 +50,5 @@ def check_tables():
     for model in (Task, File):
         if not model.table_exists():
             model.create_table()
+
+check_tables()
