@@ -4,8 +4,8 @@
 
 import 'babel-polyfill'
 import fetch from 'isomorphic-fetch'
-import { makeBody, api } from './core/request'
-import { browserHistory } from 'react-router'
+import {makeBody, api} from './core/request'
+import {browserHistory} from 'react-router'
 
 
 // 定义 action.type
@@ -26,7 +26,6 @@ export const CREATE_TASK_SUCCESS = 'CREATE_TASK_SUCCESS';
 export const SHOW_MESSAGE = 'SHOW_MESSAGE';
 
 
-
 // 定义action创建函数
 export function addTask(url) {
     return {type: ADD_TASK, url}
@@ -41,7 +40,6 @@ export function deleteTask(id) {
 export function setFilter(filter) {
     return {type: SET_FILTER, filter}
 }
-
 
 
 export function invalidateTasks() {
@@ -74,17 +72,17 @@ export function receiveTasks(json) {
 
 
 export function closeTaskAdd() {
-    return { type: CLOSE_TASK_ADD }
+    return {type: CLOSE_TASK_ADD}
 }
 
 
 export function openTaskAdd() {
-    return { type: OPEN_TASK_ADD }
+    return {type: OPEN_TASK_ADD}
 }
 
 
-export function showMessage(msg) {
-    return { type: SHOW_MESSAGE, msg }
+export function showMessage(message) {
+    return {type: SHOW_MESSAGE, message}
 
 }
 
@@ -98,28 +96,29 @@ export function fetchTasks() {
 
     return function (dispatch) {
         // 通知应用请求已经发起
+        dispatch(showMessage('请求中...'));
         dispatch(requestTasks());
 
         // 发起请求
         fetch(`${api}/tasks`, {mode: 'cors'})
-            .catch(e => console.log(e))
             .then(getJson)
-            .then(json => dispatch(receiveTasks(json)));
+            .then(json => dispatch(receiveTasks(json)))
+            .then(() => dispatch(showMessage('载入成功')));
     }
 }
 
 
-export function createTaskSuccess(){
-    return {type: CREATE_TASK_SUCCESS}
+export function createTaskSuccess() {
+    return showMessage('任务创建成功');
 }
 
 
 export function createTask(data) {
-        return function (dispatch) {
-            console.log(data);
-            fetch(`${api}/tasks`, {mode: 'cors', method: 'POST', body: makeBody(data)})
-                .then(dispatch(createTaskSuccess()))
-                .then(browserHistory.push('/'))
+    return function (dispatch) {
+        console.log(data);
+        fetch(`${api}/tasks`, {mode: 'cors', method: 'POST', body: makeBody(data)})
+            .then(dispatch(createTaskSuccess()))
+            .then(browserHistory.push('/'))
     }
 }
 
