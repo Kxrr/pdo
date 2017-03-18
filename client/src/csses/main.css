@@ -1,0 +1,20 @@
+.flash-container{
+    float: right;
+}
+
+.trans-enter.message {
+    opacity: 1;
+    display: block !important;
+
+}
+
+.trans-enter-active.message {
+    opacity: 0;
+    transition: opacity 2.0s ease-in;
+    display: block !important;
+}
+
+
+.message {
+    display: none;
+}

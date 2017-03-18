@@ -16,7 +16,7 @@ class TaskAddForm extends Component {
             <Modal show={this.props.modal.showTaskAdd} >
 
                 <Modal.Header>
-                    Add Task
+                    Create Task
                 </Modal.Header>
 
                 <Modal.Body>

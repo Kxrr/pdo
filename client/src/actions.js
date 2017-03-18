@@ -94,22 +94,27 @@ export function fetchTasks() {
         return response.json();
     }
 
+    function onReceive(json, dispatch) {
+        dispatch(receiveTasks(json));
+        const taskNum = json.data.length;
+        dispatch(showMessage(`${taskNum} ${taskNum >0 ? 'tasks' : 'task'} loaded`));
+    }
+
     return function (dispatch) {
         // 通知应用请求已经发起
-        dispatch(showMessage('请求中...'));
+        dispatch(showMessage('Loading tasks'));
         dispatch(requestTasks());
 
         // 发起请求
         fetch(`${api}/tasks`, {mode: 'cors'})
             .then(getJson)
-            .then(json => dispatch(receiveTasks(json)))
-            .then(() => dispatch(showMessage('载入成功')));
+            .then(json => onReceive(json, dispatch))
     }
 }
 
 
 export function createTaskSuccess() {
-    return showMessage('任务创建成功');
+    return showMessage('Task created');
 }
 
 

@@ -5,7 +5,7 @@
 import {connect} from 'react-redux'
 import Toolbar from '../components/Toolbar.js'
 
-import { fetchTasks, openTaskAdd } from '../actions'
+import { fetchTasks, openTaskAdd, showMessage} from '../actions'
 
 const mapStateToProps = (state) => state;
 
@@ -13,7 +13,8 @@ const mapStateToProps = (state) => state;
 const mapDispatchToProps = (dispatch) => {
     return {
         onRefreshClick: () => dispatch(fetchTasks()),
-        openTaskAdd: () => dispatch(openTaskAdd())
+        openTaskAdd: () => dispatch(openTaskAdd()),
+        testFlash: () => dispatch(showMessage(Math.random()))
     }
 };
 

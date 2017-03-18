@@ -17,8 +17,9 @@ export default class Toolbar extends React.Component {
     render() {
         return (
             <div>
-                <Button onClick={this.props.openTaskAdd}>Add Task</Button>
+                <Button onClick={this.props.openTaskAdd}>Create Task</Button>
                 <Button onClick={this.props.onRefreshClick}>Refresh All Task</Button>
+                {/*<Button onClick={this.props.testFlash}>Flash!</Button>*/}
             </div>
 
         )

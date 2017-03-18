@@ -5,23 +5,23 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
+import '../csses/main.css'
+
 export default class Flash extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        console.log(this.props);
         return (
-            <div>
+            <div className="flash-container">
                 <ReactCSSTransitionGroup
-                    transitionName="example"
-                    transitionEnterTimeout={500}
-                    transitionLeaveTimeout={300}>
-                    <div key={this.props.message}>{this.props.message}</div>
+                    transitionName="trans"
+                    transitionEnterTimeout={2000}
+                    transitionLeaveTimeout={100}>
+                    <div key={this.props.message} className="message">{this.props.message}</div>
                 </ReactCSSTransitionGroup>
             </div>
         );
     }
 }
-
