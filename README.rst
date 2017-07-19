@@ -1,7 +1,9 @@
 PDO
 ===
 
-``PDO`` is a remote download service with decent experiences (but still undone 😕).
+**NOTE: THIS PROJECT IS DEPRECATED**
+
+``PDO`` is a remote download service with decent experiences.
 
 |demo|
 
